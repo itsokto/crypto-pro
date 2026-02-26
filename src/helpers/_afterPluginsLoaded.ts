@@ -8,8 +8,6 @@ let isPluginLoaded = false;
 export const _afterPluginsLoaded = <T extends (...args: any[]) => any>(
   fn: T,
 ): ((...args: Parameters<T>) => Promise<Unpromisify<ReturnType<T>>>) => {
-  const canPromise = Boolean(window.Promise);
-
   return async function (...args: Parameters<T>): Promise<Unpromisify<ReturnType<T>>> {
     if (!isPluginLoaded) {
       try {
@@ -26,10 +24,6 @@ export const _afterPluginsLoaded = <T extends (...args: any[]) => any>(
     }
 
     const { cadesplugin } = window;
-
-    if (!canPromise) {
-      throw new Error('Необходим полифилл для Promise');
-    }
 
     if (!cadesplugin) {
       throw new Error('Не подключен модуль для работы с Cades plugin');

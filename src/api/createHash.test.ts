@@ -1,3 +1,4 @@
+import { describe, test, expect, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { createHash } from './createHash';
 
@@ -5,9 +6,9 @@ const executionSteps = [Symbol('step 0'), Symbol('step 1')];
 
 const executionFlow = {
   [executionSteps[0]]: {
-    propset_Algorithm: jest.fn(),
-    propset_DataEncoding: jest.fn(),
-    Hash: jest.fn(),
+    propset_Algorithm: vi.fn(),
+    propset_DataEncoding: vi.fn(),
+    Hash: vi.fn(),
     Value: executionSteps[1],
   },
   [executionSteps[1]]: 'hash',
@@ -23,17 +24,17 @@ window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
 
 describe('createHash', () => {
   test('uses Buffer to encrypt the message', async () => {
-    const originalBufferFrom = global.Buffer.from;
+    const originalBufferFrom = Buffer.from;
 
-    (global.Buffer.from as jest.Mock) = jest.fn(() => ({
-      toString: jest.fn(),
+    (Buffer.from as Mock) = vi.fn(() => ({
+      toString: vi.fn(),
     }));
 
     await createHash('message');
 
-    expect(global.Buffer.from).toHaveBeenCalledTimes(1);
+    expect(Buffer.from).toHaveBeenCalledTimes(1);
 
-    global.Buffer.from = originalBufferFrom;
+    Buffer.from = originalBufferFrom;
   });
 
   test('returns created hash', async () => {

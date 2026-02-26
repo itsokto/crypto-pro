@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
 import { createAttachedSignature } from './createAttachedSignature';
@@ -6,31 +7,31 @@ import { _getCadesCert } from '../helpers/_getCadesCert';
 const [rawCertificateMock] = rawCertificates;
 const [parsedCertificateMock] = parsedCertificates;
 
-jest.mock('../helpers/_getCadesCert', () => ({ _getCadesCert: jest.fn(() => rawCertificateMock) }));
+vi.mock('../helpers/_getCadesCert', () => ({ _getCadesCert: vi.fn(() => rawCertificateMock) }));
 
 beforeEach(() => {
-  (_getCadesCert as jest.Mock).mockClear();
+  (_getCadesCert as Mock).mockClear();
 });
 
 const executionSteps = [Symbol('step 0'), Symbol('step 1'), Symbol('step 2'), Symbol('step 3'), Symbol('step 4')];
 
 const executionFlow = {
   [executionSteps[0]]: {
-    propset_Name: jest.fn(),
-    propset_Value: jest.fn(),
+    propset_Name: vi.fn(),
+    propset_Value: vi.fn(),
   },
   [executionSteps[1]]: {
-    propset_ContentEncoding: jest.fn(),
-    propset_Content: jest.fn(),
-    SignCades: jest.fn(() => executionSteps[4]),
+    propset_ContentEncoding: vi.fn(),
+    propset_Content: vi.fn(),
+    SignCades: vi.fn(() => executionSteps[4]),
   },
   [executionSteps[2]]: {
-    propset_Certificate: jest.fn(),
+    propset_Certificate: vi.fn(),
     AuthenticatedAttributes2: executionSteps[3],
-    propset_Options: jest.fn(),
+    propset_Options: vi.fn(),
   },
   [executionSteps[3]]: {
-    Add: jest.fn(),
+    Add: vi.fn(),
   },
   [executionSteps[4]]: 'signature',
 };
@@ -49,17 +50,17 @@ window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
 
 describe('createAttachedSignature', () => {
   test('uses Buffer to encrypt the message', async () => {
-    const originalBufferFrom = global.Buffer.from;
+    const originalBufferFrom = Buffer.from;
 
-    (global.Buffer.from as jest.Mock) = jest.fn(() => ({
-      toString: jest.fn(),
+    (Buffer.from as Mock) = vi.fn(() => ({
+      toString: vi.fn(),
     }));
 
     await createAttachedSignature(parsedCertificateMock.thumbprint, 'message');
 
-    expect(global.Buffer.from).toHaveBeenCalledTimes(1);
+    expect(Buffer.from).toHaveBeenCalledTimes(1);
 
-    global.Buffer.from = originalBufferFrom;
+    Buffer.from = originalBufferFrom;
   });
 
   test('uses specified certificate', async () => {

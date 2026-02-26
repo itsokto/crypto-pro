@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
 import { getUserCertificates } from './getUserCertificates';
@@ -22,18 +23,18 @@ const executionSteps = [
 const executionFlow = {
   [executionSteps[0]]: {
     Certificates: executionSteps[1],
-    Close: jest.fn(),
-    Open: jest.fn(),
+    Close: vi.fn(),
+    Open: vi.fn(),
   },
   [executionSteps[1]]: {
-    Find: jest.fn(() => executionSteps[2]),
+    Find: vi.fn(() => executionSteps[2]),
   },
   [executionSteps[2]]: {
-    Find: jest.fn(() => executionSteps[3]),
+    Find: vi.fn(() => executionSteps[3]),
   },
   [executionSteps[3]]: {
     Count: executionSteps[4],
-    Item: jest.fn(() => executionSteps[5]),
+    Item: vi.fn(() => executionSteps[5]),
   },
   [executionSteps[4]]: 1,
   [executionSteps[5]]: {

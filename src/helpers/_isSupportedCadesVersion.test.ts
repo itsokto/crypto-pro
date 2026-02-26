@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { _isSupportedCadesVersion } from './_isSupportedCadesVersion';
 
 describe('_isSupportedCadesVersion', () => {

@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { exportBase64 } from './exportBase64';
 
@@ -15,7 +16,7 @@ describe('exportBase64', () => {
   test('returns exported certificate', async () => {
     const certificateAsBase64 = await exportBase64.call({
       _cadesCertificate: {
-        Export: jest.fn(() => executionSteps[0]),
+        Export: vi.fn(() => executionSteps[0]),
       },
     });
 

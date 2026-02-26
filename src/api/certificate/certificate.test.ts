@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { parsedCertificates } from '../../__mocks__/certificates';
 import { ISSUER_TAGS_TRANSLATIONS, SUBJECT_TAGS_TRANSLATIONS } from '../../constants';
@@ -14,26 +15,26 @@ import { Certificate } from './certificate';
 const [parsedCertificateMock] = parsedCertificates;
 const oidsMock = ['oid 1', 'oid 2'];
 
-jest.mock('./isValid', () => ({ isValid: jest.fn(() => 'isValid') }));
-jest.mock('./getCadesProp', () => ({ getCadesProp: jest.fn(() => 'getCadesProp') }));
-jest.mock('./exportBase64', () => ({ exportBase64: jest.fn(() => 'exportBase64') }));
-jest.mock('./getAlgorithm', () => ({ getAlgorithm: jest.fn(() => 'getAlgorithm') }));
-jest.mock('./getInfo', () => ({ getInfo: jest.fn(() => 'getInfo') }));
-jest.mock('./getExtendedKeyUsage', () => ({ getExtendedKeyUsage: jest.fn(() => 'getExtendedKeyUsage') }));
-jest.mock('./getDecodedExtendedKeyUsage', () => ({
-  getDecodedExtendedKeyUsage: jest.fn(() => 'getDecodedExtendedKeyUsage'),
+vi.mock('./isValid', () => ({ isValid: vi.fn(() => 'isValid') }));
+vi.mock('./getCadesProp', () => ({ getCadesProp: vi.fn(() => 'getCadesProp') }));
+vi.mock('./exportBase64', () => ({ exportBase64: vi.fn(() => 'exportBase64') }));
+vi.mock('./getAlgorithm', () => ({ getAlgorithm: vi.fn(() => 'getAlgorithm') }));
+vi.mock('./getInfo', () => ({ getInfo: vi.fn(() => 'getInfo') }));
+vi.mock('./getExtendedKeyUsage', () => ({ getExtendedKeyUsage: vi.fn(() => 'getExtendedKeyUsage') }));
+vi.mock('./getDecodedExtendedKeyUsage', () => ({
+  getDecodedExtendedKeyUsage: vi.fn(() => 'getDecodedExtendedKeyUsage'),
 }));
-jest.mock('./hasExtendedKeyUsage', () => ({ hasExtendedKeyUsage: jest.fn(() => 'hasExtendedKeyUsage') }));
+vi.mock('./hasExtendedKeyUsage', () => ({ hasExtendedKeyUsage: vi.fn(() => 'hasExtendedKeyUsage') }));
 
 beforeEach(() => {
-  (isValid as jest.Mock).mockClear();
-  (getCadesProp as jest.Mock).mockClear();
-  (exportBase64 as jest.Mock).mockClear();
-  (getAlgorithm as jest.Mock).mockClear();
-  (getInfo as jest.Mock).mockClear();
-  (getExtendedKeyUsage as jest.Mock).mockClear();
-  (getDecodedExtendedKeyUsage as jest.Mock).mockClear();
-  (hasExtendedKeyUsage as jest.Mock).mockClear();
+  (isValid as Mock).mockClear();
+  (getCadesProp as Mock).mockClear();
+  (exportBase64 as Mock).mockClear();
+  (getAlgorithm as Mock).mockClear();
+  (getInfo as Mock).mockClear();
+  (getExtendedKeyUsage as Mock).mockClear();
+  (getDecodedExtendedKeyUsage as Mock).mockClear();
+  (hasExtendedKeyUsage as Mock).mockClear();
 });
 
 const certificate = new Certificate(

@@ -1,3 +1,4 @@
+/** @type {import('prettier').Config} */
 module.exports = {
   semi: true,
   trailingComma: 'all',
@@ -5,4 +6,5 @@ module.exports = {
   printWidth: 120,
   tabWidth: 2,
   arrowParens: 'always',
+  endOfLine: 'auto',
 };

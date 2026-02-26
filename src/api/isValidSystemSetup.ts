@@ -9,26 +9,24 @@ import { getSystemInfo, SystemInfo } from './getSystemInfo';
  *
  * @returns флаг корректности настроек
  */
-export const isValidSystemSetup = _afterPluginsLoaded(
-  async (): Promise<boolean> => {
-    let systemInfo: SystemInfo;
+export const isValidSystemSetup = _afterPluginsLoaded(async (): Promise<boolean> => {
+  let systemInfo: SystemInfo;
 
-    try {
-      systemInfo = await getSystemInfo();
-    } catch (error) {
-      console.error(error);
+  try {
+    systemInfo = await getSystemInfo();
+  } catch (error) {
+    console.error(error);
 
-      throw new Error(_extractMeaningfulErrorMessage(error) || 'Настройки ЭП на данной машине не верны');
-    }
+    throw new Error(_extractMeaningfulErrorMessage(error) || 'Настройки ЭП на данной машине не верны');
+  }
 
-    if (!_isSupportedCadesVersion(systemInfo.cadesVersion)) {
-      throw new Error('Не поддерживаемая версия плагина');
-    }
+  if (!_isSupportedCadesVersion(systemInfo.cadesVersion)) {
+    throw new Error('Не поддерживаемая версия плагина');
+  }
 
-    if (!_isSupportedCSPVersion(systemInfo.cspVersion)) {
-      throw new Error('Не поддерживаемая версия CSP');
-    }
+  if (!_isSupportedCSPVersion(systemInfo.cspVersion)) {
+    throw new Error('Не поддерживаемая версия CSP');
+  }
 
-    return true;
-  },
-);
+  return true;
+});

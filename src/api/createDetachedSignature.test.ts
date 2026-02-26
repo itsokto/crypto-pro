@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
 import { createDetachedSignature } from './createDetachedSignature';
@@ -6,10 +7,10 @@ import { _getCadesCert } from '../helpers/_getCadesCert';
 const [rawCertificateMock] = rawCertificates;
 const [parsedCertificateMock] = parsedCertificates;
 
-jest.mock('../helpers/_getCadesCert', () => ({ _getCadesCert: jest.fn(() => rawCertificateMock) }));
+vi.mock('../helpers/_getCadesCert', () => ({ _getCadesCert: vi.fn(() => rawCertificateMock) }));
 
 beforeEach(() => {
-  (_getCadesCert as jest.Mock).mockClear();
+  (_getCadesCert as Mock).mockClear();
 });
 
 const executionSteps = [
@@ -23,26 +24,26 @@ const executionSteps = [
 
 const executionFlow = {
   [executionSteps[0]]: {
-    propset_Name: jest.fn(),
-    propset_Value: jest.fn(),
+    propset_Name: vi.fn(),
+    propset_Value: vi.fn(),
   },
   [executionSteps[1]]: {
-    propset_ContentEncoding: jest.fn(),
-    propset_Content: jest.fn(),
-    SignHash: jest.fn(() => executionSteps[4]),
+    propset_ContentEncoding: vi.fn(),
+    propset_Content: vi.fn(),
+    SignHash: vi.fn(() => executionSteps[4]),
   },
   [executionSteps[2]]: {
-    propset_Certificate: jest.fn(),
+    propset_Certificate: vi.fn(),
     AuthenticatedAttributes2: executionSteps[3],
-    propset_Options: jest.fn(),
+    propset_Options: vi.fn(),
   },
   [executionSteps[3]]: {
-    Add: jest.fn(),
+    Add: vi.fn(),
   },
   [executionSteps[4]]: 'signature',
   [executionSteps[5]]: {
-    propset_Algorithm: jest.fn(),
-    SetHashValue: jest.fn(),
+    propset_Algorithm: vi.fn(),
+    SetHashValue: vi.fn(),
   },
 };
 

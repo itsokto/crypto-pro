@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { getSystemInfo } from './getSystemInfo';
 
@@ -15,14 +16,14 @@ const executionFlow: any = {
   [executionSteps[0]]: {
     PluginVersion: executionSteps[1],
     Version: executionSteps[2],
-    CSPVersion: jest.fn(() => executionSteps[3]),
+    CSPVersion: vi.fn(() => executionSteps[3]),
   },
   [executionSteps[1]]: undefined,
   [executionSteps[2]]: {
-    toString: jest.fn(() => executionSteps[4]),
+    toString: vi.fn(() => executionSteps[4]),
   },
   [executionSteps[3]]: {
-    toString: jest.fn(() => executionSteps[5]),
+    toString: vi.fn(() => executionSteps[5]),
   },
   [executionSteps[4]]: '2.0.13771',
   [executionSteps[5]]: '4.0.9971',

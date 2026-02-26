@@ -1,25 +1,26 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { execute } from './execute';
 import { _extractMeaningfulErrorMessage } from '../helpers/_extractMeaningfulErrorMessage';
 import { __cadesAsyncToken__, __createCadesPluginObject__, _generateCadesFn } from '../helpers/_generateCadesFn';
 
-jest.mock('../helpers/_extractMeaningfulErrorMessage', () => ({ _extractMeaningfulErrorMessage: jest.fn() }));
-jest.mock('../helpers/_generateCadesFn', () => ({
-  __cadesAsyncToken__: jest.fn(),
-  __createCadesPluginObject__: jest.fn(),
-  _generateCadesFn: jest.fn(),
+vi.mock('../helpers/_extractMeaningfulErrorMessage', () => ({ _extractMeaningfulErrorMessage: vi.fn() }));
+vi.mock('../helpers/_generateCadesFn', () => ({
+  __cadesAsyncToken__: vi.fn(),
+  __createCadesPluginObject__: vi.fn(),
+  _generateCadesFn: vi.fn(),
 }));
 
 beforeEach(() => {
-  (_extractMeaningfulErrorMessage as jest.Mock).mockClear();
-  (__cadesAsyncToken__ as jest.Mock).mockClear();
-  (__createCadesPluginObject__ as jest.Mock).mockClear();
-  (_generateCadesFn as jest.Mock).mockClear();
+  (_extractMeaningfulErrorMessage as Mock).mockClear();
+  (__cadesAsyncToken__ as Mock).mockClear();
+  (__createCadesPluginObject__ as Mock).mockClear();
+  (_generateCadesFn as Mock).mockClear();
 });
 
 describe('execute', () => {
   test('calls custom implementation with exposed API', async () => {
-    const customCallback = jest.fn();
+    const customCallback = vi.fn();
 
     await execute(customCallback);
 

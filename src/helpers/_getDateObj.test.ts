@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import { _getDateObj } from './_getDateObj';
 
 describe('_getDateObj', () => {
@@ -14,7 +15,7 @@ describe('_getDateObj', () => {
       const currentTime: Date & { getVarDate?: () => {} } = new Date();
       const ieSpecificDate = 'IE specific date';
 
-      currentTime.getVarDate = jest.fn(() => ieSpecificDate);
+      currentTime.getVarDate = vi.fn(() => ieSpecificDate);
 
       expect(_getDateObj(currentTime)).toBe(ieSpecificDate);
     });

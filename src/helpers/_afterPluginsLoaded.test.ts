@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import 'cadesplugin';
 import 'console-mock';
 import { _afterPluginsLoaded } from './_afterPluginsLoaded';
@@ -10,7 +11,7 @@ describe('_afterPluginsLoaded', () => {
   });
 
   test('sets log level on a vendor library', async () => {
-    const wrappedMethod = _afterPluginsLoaded(jest.fn());
+    const wrappedMethod = _afterPluginsLoaded(vi.fn());
 
     await wrappedMethod();
 
@@ -18,7 +19,7 @@ describe('_afterPluginsLoaded', () => {
   });
 
   test("throws Error when Cades plugin isn't available", async () => {
-    const wrappedMethod = _afterPluginsLoaded(jest.fn());
+    const wrappedMethod = _afterPluginsLoaded(vi.fn());
 
     window.cadesplugin = Promise.reject();
 
@@ -26,7 +27,7 @@ describe('_afterPluginsLoaded', () => {
   });
 
   test('throws Error from Cades plugin if it occurs', async () => {
-    const wrappedMethod = _afterPluginsLoaded(jest.fn());
+    const wrappedMethod = _afterPluginsLoaded(vi.fn());
     const vendorErrorMessage = 'Что-то пошло не так, и об этом стоит знать пользователю';
 
     window.cadesplugin = Promise.reject(new Error(vendorErrorMessage));
@@ -35,7 +36,7 @@ describe('_afterPluginsLoaded', () => {
   });
 
   test('calls method body when invoked', async () => {
-    const methodBody = jest.fn();
+    const methodBody = vi.fn();
     const wrappedMethod = _afterPluginsLoaded(methodBody);
 
     await wrappedMethod();

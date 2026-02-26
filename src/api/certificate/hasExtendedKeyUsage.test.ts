@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { hasExtendedKeyUsage } from './hasExtendedKeyUsage';
 
@@ -5,7 +6,7 @@ const oidsMock = ['1.3.6.1.4.1.311.80.1', '1.3.6.1.5.5.7.3.2', '1.3.6.1.4.1.311.
 
 describe('hasExtendedKeyUsage', () => {
   test('returns info about existing oids of a certificate', async () => {
-    const getExtendedKeyUsageStub = jest.fn(() => oidsMock);
+    const getExtendedKeyUsageStub = vi.fn(() => oidsMock);
     const certificateStub = { getExtendedKeyUsage: getExtendedKeyUsageStub };
 
     expect(await hasExtendedKeyUsage.call(certificateStub, '1.3.6.1.4.1.311.80.1')).toEqual(true);

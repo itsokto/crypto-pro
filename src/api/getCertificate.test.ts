@@ -1,12 +1,13 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { parsedCertificates } from '../__mocks__/certificates';
 import { getCertificate } from './getCertificate';
 import { getUserCertificates } from './getUserCertificates';
 
-jest.mock('./getUserCertificates', () => ({ getUserCertificates: jest.fn(() => parsedCertificates) }));
+vi.mock('./getUserCertificates', () => ({ getUserCertificates: vi.fn(() => parsedCertificates) }));
 
 beforeEach(() => {
-  (getUserCertificates as jest.Mock).mockClear();
+  (getUserCertificates as Mock).mockClear();
 });
 
 describe('getCertificate', () => {

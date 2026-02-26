@@ -42,7 +42,7 @@ export const createHash = _afterPluginsLoaded(
           if (options?.encoding && typeof unencryptedMessage === 'string') {
             messageBase64 = Buffer.from(unencryptedMessage, options?.encoding).toString('base64');
           } else {
-            messageBase64 = Buffer.from(unencryptedMessage).toString('base64');
+            messageBase64 = Buffer.from(unencryptedMessage as string | Uint8Array).toString('base64');
           }
         } catch (error) {
           console.error(error);

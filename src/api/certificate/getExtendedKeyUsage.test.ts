@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { getExtendedKeyUsage } from './getExtendedKeyUsage';
 
@@ -11,7 +12,7 @@ const executionFlow = {
   },
   [executionSteps[1]]: {
     Count: executionSteps[2],
-    Item: jest.fn(() => executionSteps[3]),
+    Item: vi.fn(() => executionSteps[3]),
   },
   [executionSteps[2]]: 1,
   [executionSteps[3]]: {
@@ -26,7 +27,7 @@ describe('getExtendedKeyUsage', () => {
   test('returns info about oids', async () => {
     const oids = await getExtendedKeyUsage.call({
       _cadesCertificate: {
-        ExtendedKeyUsage: jest.fn(() => executionSteps[0]),
+        ExtendedKeyUsage: vi.fn(() => executionSteps[0]),
       },
     });
 

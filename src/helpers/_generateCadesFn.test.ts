@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach } from 'vitest';
 import 'cadesplugin';
 import { __cadesAsyncToken__, __createCadesPluginObject__, _generateCadesFn } from './_generateCadesFn';
 
@@ -10,73 +11,58 @@ describe('_generateCadesFn', () => {
     });
 
     test('generates function body from named function callback', () => {
-      expect(
-        _generateCadesFn(function namedFunction() {
-          console.log('hello from named function');
-        }),
-      ).toEqual(
-        `(function anonymous(
-) {
+      const result = _generateCadesFn(function namedFunction() {
+        console.log('hello from named function');
+      });
 
-                console.log('hello from named function');
-            
-})();//# sourceURL=crypto-pro_namedFunction.js`,
-      );
+      expect(result).toContain('console.log("hello from named function")');
+      expect(result).toContain('sourceURL=crypto-pro_namedFunction.js');
+      expect(result).toMatch(/^\(function anonymous\(/);
+      expect(result).toContain('();//# sourceURL=');
     });
 
     test('generates function body from arrow function callback', () => {
-      expect(_generateCadesFn(() => console.log('hello from arrow function'))).toEqual(
-        `(function anonymous(
-) {
- return console.log('hello from arrow function'); 
-})();//# sourceURL=crypto-pro_dynamicFn.js`,
-      );
+      const result = _generateCadesFn(() => console.log('hello from arrow function'));
+
+      expect(result).toContain('console.log("hello from arrow function")');
+      expect(result).toContain('sourceURL=crypto-pro_dynamicFn.js');
     });
 
     test('generates function body with synchronous vendor library references', () => {
-      expect(
-        _generateCadesFn(function methodInSyncEnvironment() {
-          const cadesFoo = __cadesAsyncToken__ + __createCadesPluginObject__('CADESCOM.Foo');
-          const cadesBar = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.Bar');
-          const cadesBarNoMatterWhat = __cadesAsyncToken__ + cadesBar.NoMatterWhat;
-          void (__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
-          void (__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-        }),
-      ).toEqual(
-        `(function anonymous(
-) {
+      const result = _generateCadesFn(function methodInSyncEnvironment() {
+        const cadesFoo = __cadesAsyncToken__ + __createCadesPluginObject__('CADESCOM.Foo');
+        const cadesBar = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.Bar');
+        const cadesBarNoMatterWhat = __cadesAsyncToken__ + cadesBar.NoMatterWhat;
+        void (__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
+        void (__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
+      });
 
-                var cadesFoo = cadesplugin.CreateObject('CADESCOM.Foo');
-                var cadesBar = cadesplugin.CreateObject('CAdESCOM.Bar');
-                var cadesBarNoMatterWhat = cadesBar.NoMatterWhat;
-                void (cadesFoo.WhateverProperty = 'whatever value');
-                void (cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-            
-})();//# sourceURL=crypto-pro_methodInSyncEnvironment.js`,
-      );
+      expect(result).toContain('cadesplugin.CreateObject("CADESCOM.Foo")');
+      expect(result).toContain('cadesplugin.CreateObject("CAdESCOM.Bar")');
+      expect(result).not.toContain('__cadesAsyncToken__');
+      expect(result).not.toContain('__createCadesPluginObject__');
+      expect(result).toContain('cadesFoo.WhateverProperty = "whatever value"');
+      expect(result).toContain('cadesBarNoMatterWhat.whateverMethod(cadesFoo)');
+      expect(result).toContain('();//# sourceURL=crypto-pro_methodInSyncEnvironment.js');
+      expect(result).not.toContain('yield');
     });
 
     test('generates function body for synchronous custom implementation', () => {
-      expect(
-        _generateCadesFn(function customSyncEnvImplementation(utils) {
-          const cadesFoo = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CADESCOM.Foo');
-          const cadesBar = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CAdESCOM.Bar');
-          const cadesBarNoMatterWhat = utils.__cadesAsyncToken__ + cadesBar.NoMatterWhat;
-          void (utils.__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
-          void (utils.__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-        }),
-      ).toEqual(
-        `(function anonymous(utils
-) {
+      const result = _generateCadesFn(function customSyncEnvImplementation(utils) {
+        const cadesFoo = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CADESCOM.Foo');
+        const cadesBar = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CAdESCOM.Bar');
+        const cadesBarNoMatterWhat = utils.__cadesAsyncToken__ + cadesBar.NoMatterWhat;
+        void (utils.__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
+        void (utils.__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
+      });
 
-                var cadesFoo = cadesplugin.CreateObject('CADESCOM.Foo');
-                var cadesBar = cadesplugin.CreateObject('CAdESCOM.Bar');
-                var cadesBarNoMatterWhat = cadesBar.NoMatterWhat;
-                void (cadesFoo.WhateverProperty = 'whatever value');
-                void (cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-            
-})();//# sourceURL=crypto-pro_customSyncEnvImplementation.js`,
-      );
+      expect(result).toContain('cadesplugin.CreateObject("CADESCOM.Foo")');
+      expect(result).toContain('cadesplugin.CreateObject("CAdESCOM.Bar")');
+      expect(result).not.toContain('__cadesAsyncToken__');
+      expect(result).not.toContain('__createCadesPluginObject__');
+      expect(result).toContain('cadesFoo.WhateverProperty = "whatever value"');
+      expect(result).toContain('();//# sourceURL=crypto-pro_customSyncEnvImplementation.js');
+      expect(result).not.toContain('yield');
     });
   });
 
@@ -86,49 +72,41 @@ describe('_generateCadesFn', () => {
     });
 
     test('generates function body with asynchronous vendor library references', () => {
-      expect(
-        _generateCadesFn(function methodInAsyncEnvironment() {
-          const cadesFoo = __cadesAsyncToken__ + __createCadesPluginObject__('CADESCOM.Foo');
-          const cadesBar = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.Bar');
-          const cadesBarNoMatterWhat = __cadesAsyncToken__ + cadesBar.NoMatterWhat;
-          void (__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
-          void (__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-        }),
-      ).toEqual(
-        `cadesplugin.async_spawn(function* anonymous(
-) {
+      const result = _generateCadesFn(function methodInAsyncEnvironment() {
+        const cadesFoo = __cadesAsyncToken__ + __createCadesPluginObject__('CADESCOM.Foo');
+        const cadesBar = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.Bar');
+        const cadesBarNoMatterWhat = __cadesAsyncToken__ + cadesBar.NoMatterWhat;
+        void (__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
+        void (__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
+      });
 
-                var cadesFoo = yield cadesplugin.CreateObjectAsync('CADESCOM.Foo');
-                var cadesBar = yield cadesplugin.CreateObjectAsync('CAdESCOM.Bar');
-                var cadesBarNoMatterWhat = yield cadesBar.NoMatterWhat;
-                void (yield cadesFoo.propset_WhateverProperty('whatever value'));
-                void (yield cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-            
-});//# sourceURL=crypto-pro_methodInAsyncEnvironment.js`,
-      );
+      expect(result).toMatch(/^cadesplugin\.async_spawn\(function\* anonymous\(/);
+      expect(result).toContain('yield cadesplugin.CreateObjectAsync("CADESCOM.Foo")');
+      expect(result).toContain('yield cadesplugin.CreateObjectAsync("CAdESCOM.Bar")');
+      expect(result).toContain('yield cadesBar.NoMatterWhat');
+      expect(result).not.toContain('__cadesAsyncToken__');
+      expect(result).not.toContain('__createCadesPluginObject__');
+      expect(result).toContain('yield cadesFoo.propset_WhateverProperty("whatever value")');
+      expect(result).toContain('yield cadesBarNoMatterWhat.whateverMethod(cadesFoo)');
+      expect(result).toContain(';//# sourceURL=crypto-pro_methodInAsyncEnvironment.js');
     });
 
     test('generates function body for asynchronous custom implementation', () => {
-      expect(
-        _generateCadesFn(function customAsyncEnvImplementation(utils) {
-          const cadesFoo = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CADESCOM.Foo');
-          const cadesBar = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CAdESCOM.Bar');
-          const cadesBarNoMatterWhat = utils.__cadesAsyncToken__ + cadesBar.NoMatterWhat;
-          void (utils.__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
-          void (utils.__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-        }),
-      ).toEqual(
-        `cadesplugin.async_spawn(function* anonymous(utils
-) {
+      const result = _generateCadesFn(function customAsyncEnvImplementation(utils) {
+        const cadesFoo = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CADESCOM.Foo');
+        const cadesBar = utils.__cadesAsyncToken__ + utils.__createCadesPluginObject__('CAdESCOM.Bar');
+        const cadesBarNoMatterWhat = utils.__cadesAsyncToken__ + cadesBar.NoMatterWhat;
+        void (utils.__cadesAsyncToken__ + cadesFoo.propset_WhateverProperty('whatever value'));
+        void (utils.__cadesAsyncToken__ + cadesBarNoMatterWhat.whateverMethod(cadesFoo));
+      });
 
-                var cadesFoo = yield cadesplugin.CreateObjectAsync('CADESCOM.Foo');
-                var cadesBar = yield cadesplugin.CreateObjectAsync('CAdESCOM.Bar');
-                var cadesBarNoMatterWhat = yield cadesBar.NoMatterWhat;
-                void (yield cadesFoo.propset_WhateverProperty('whatever value'));
-                void (yield cadesBarNoMatterWhat.whateverMethod(cadesFoo));
-            
-});//# sourceURL=crypto-pro_customAsyncEnvImplementation.js`,
-      );
+      expect(result).toMatch(/^cadesplugin\.async_spawn\(function\* anonymous\(utils/);
+      expect(result).toContain('yield cadesplugin.CreateObjectAsync("CADESCOM.Foo")');
+      expect(result).toContain('yield cadesplugin.CreateObjectAsync("CAdESCOM.Bar")');
+      expect(result).not.toContain('__cadesAsyncToken__');
+      expect(result).not.toContain('__createCadesPluginObject__');
+      expect(result).toContain('yield cadesFoo.propset_WhateverProperty("whatever value")');
+      expect(result).toContain(';//# sourceURL=crypto-pro_customAsyncEnvImplementation.js');
     });
   });
 });

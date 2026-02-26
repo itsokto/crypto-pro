@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { ISSUER_TAGS_TRANSLATIONS, SUBJECT_TAGS_TRANSLATIONS } from '../constants';
 import { _parseCertInfo } from './_parseCertInfo';
 

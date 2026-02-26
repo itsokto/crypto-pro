@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 // suppress logging errors to stdout while running tests
-window.console.error = jest.fn();
-window.console.warn = jest.fn();
+window.console.error = vi.fn();
+window.console.warn = vi.fn();

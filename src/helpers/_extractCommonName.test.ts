@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { _extractCommonName } from './_extractCommonName';
 
 describe('_extractCommonName', () => {

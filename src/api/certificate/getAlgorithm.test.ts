@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { getAlgorithm } from './getAlgorithm';
 
@@ -21,7 +22,7 @@ describe('getAlgorithm', () => {
   test('returns information about algorithm', async () => {
     const algorithmInfo = await getAlgorithm.call({
       _cadesCertificate: {
-        PublicKey: jest.fn(() => executionSteps[0]),
+        PublicKey: vi.fn(() => executionSteps[0]),
       },
     });
 

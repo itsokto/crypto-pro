@@ -8,19 +8,17 @@ import { getUserCertificates } from './getUserCertificates';
  * @param thumbprint - отпечаток сертификата
  * @returns сертификат
  */
-export const getCertificate = _afterPluginsLoaded(
-  async (thumbprint: string): Promise<Certificate> => {
-    if (!thumbprint) {
-      throw new Error('Отпечаток не указан');
-    }
+export const getCertificate = _afterPluginsLoaded(async (thumbprint: string): Promise<Certificate> => {
+  if (!thumbprint) {
+    throw new Error('Отпечаток не указан');
+  }
 
-    const availableCertificates: Certificate[] = await getUserCertificates();
-    const foundCertificate: Certificate = availableCertificates.find((cert) => cert.thumbprint === thumbprint);
+  const availableCertificates: Certificate[] = await getUserCertificates();
+  const foundCertificate: Certificate = availableCertificates.find((cert) => cert.thumbprint === thumbprint);
 
-    if (!foundCertificate) {
-      throw new Error(`Сертификат с отпечатком: "${thumbprint}" не найден`);
-    }
+  if (!foundCertificate) {
+    throw new Error(`Сертификат с отпечатком: "${thumbprint}" не найден`);
+  }
 
-    return foundCertificate;
-  },
-);
+  return foundCertificate;
+});

@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { isValid } from './isValid';
 
@@ -16,7 +17,7 @@ describe('isValid', () => {
   test('returns validity state of certificate', async () => {
     const valid = await isValid.call({
       _cadesCertificate: {
-        IsValid: jest.fn(() => executionSteps[0]),
+        IsValid: vi.fn(() => executionSteps[0]),
       },
     });
 

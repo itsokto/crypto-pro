@@ -37,8 +37,9 @@ export const _parseCertInfo = (tagsTranslations: TagsTranslations[], rawInfo: st
         }
       }
 
-      const tagTranslation = tagsTranslations.find((tag) => tag.possibleNames.find((name) => name === title))
-        ?.translation;
+      const tagTranslation = tagsTranslations.find((tag) =>
+        tag.possibleNames.find((name) => name === title),
+      )?.translation;
 
       if (tagTranslation) {
         title = tagTranslation;

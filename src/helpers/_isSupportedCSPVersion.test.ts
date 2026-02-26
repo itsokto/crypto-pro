@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { _isSupportedCSPVersion } from './_isSupportedCSPVersion';
 
 describe('_isSupportedCSPVersion', () => {

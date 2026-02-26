@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import { ISSUER_TAGS_TRANSLATIONS } from '../../constants';
 import { getInfo } from './getInfo';
@@ -14,12 +15,12 @@ const certificateInfoMock = [
   },
 ];
 
-jest.mock('./getCadesProp', () => ({ getCadesProp: jest.fn(() => entitiesMock) }));
-jest.mock('../../helpers/_parseCertInfo', () => ({ _parseCertInfo: jest.fn(() => certificateInfoMock) }));
+vi.mock('./getCadesProp', () => ({ getCadesProp: vi.fn(() => entitiesMock) }));
+vi.mock('../../helpers/_parseCertInfo', () => ({ _parseCertInfo: vi.fn(() => certificateInfoMock) }));
 
 beforeEach(() => {
-  (getCadesProp as jest.Mock).mockClear();
-  (_parseCertInfo as jest.Mock).mockClear();
+  (getCadesProp as Mock).mockClear();
+  (_parseCertInfo as Mock).mockClear();
 });
 
 describe('getInfo', () => {

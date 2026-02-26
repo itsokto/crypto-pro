@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 import 'cadesplugin';
 import 'console-mock';
 import { isValidSystemSetup } from './isValidSystemSetup';
@@ -5,23 +6,23 @@ import { getSystemInfo } from './getSystemInfo';
 import { _isSupportedCadesVersion } from '../helpers/_isSupportedCadesVersion';
 import { _isSupportedCSPVersion } from '../helpers/_isSupportedCSPVersion';
 
-jest.mock('./getSystemInfo', () => ({ getSystemInfo: jest.fn() }));
-jest.mock('../helpers/_isSupportedCadesVersion', () => ({ _isSupportedCadesVersion: jest.fn() }));
-jest.mock('../helpers/_isSupportedCSPVersion', () => ({ _isSupportedCSPVersion: jest.fn() }));
+vi.mock('./getSystemInfo', () => ({ getSystemInfo: vi.fn() }));
+vi.mock('../helpers/_isSupportedCadesVersion', () => ({ _isSupportedCadesVersion: vi.fn() }));
+vi.mock('../helpers/_isSupportedCSPVersion', () => ({ _isSupportedCSPVersion: vi.fn() }));
 
 beforeEach(() => {
-  (getSystemInfo as jest.Mock).mockClear();
-  (_isSupportedCadesVersion as jest.Mock).mockClear();
-  (_isSupportedCSPVersion as jest.Mock).mockClear();
+  (getSystemInfo as Mock).mockClear();
+  (_isSupportedCadesVersion as Mock).mockClear();
+  (_isSupportedCSPVersion as Mock).mockClear();
 });
 
 describe('isValidSystemSetup', () => {
-  (getSystemInfo as jest.Mock).mockImplementation(() => ({
+  (getSystemInfo as Mock).mockImplementation(() => ({
     cadesVersion: '2.0.13771',
     cspVersion: '4.0.9971',
   }));
-  (_isSupportedCadesVersion as jest.Mock).mockImplementation(() => true);
-  (_isSupportedCSPVersion as jest.Mock).mockImplementation(() => true);
+  (_isSupportedCadesVersion as Mock).mockImplementation(() => true);
+  (_isSupportedCSPVersion as Mock).mockImplementation(() => true);
 
   describe('positive scenario', () => {
     test("calls getSystemInfo to verify that it's possible", async () => {
@@ -43,20 +44,20 @@ describe('isValidSystemSetup', () => {
       const errorMessage = 'Какая-то синтаксическая ошибка';
       const vendorErrorMessage = 'Произошла ошибка из-за какой-то проблемы';
 
-      (getSystemInfo as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
-      (window.cadesplugin.getLastError as jest.Mock).mockImplementationOnce(() => new Error(vendorErrorMessage));
+      (getSystemInfo as Mock).mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
+      (window.cadesplugin.getLastError as Mock).mockImplementationOnce(() => new Error(vendorErrorMessage));
 
       await expect(isValidSystemSetup()).rejects.toThrowError(vendorErrorMessage);
     });
 
     test('throws error if cades version is unsupported', async () => {
-      (_isSupportedCadesVersion as jest.Mock).mockImplementationOnce(() => false);
+      (_isSupportedCadesVersion as Mock).mockImplementationOnce(() => false);
 
       await expect(isValidSystemSetup()).rejects.toThrowError('Не поддерживаемая версия плагина');
     });
 
     test('throws error if CSP version is unsupported', async () => {
-      (_isSupportedCSPVersion as jest.Mock).mockImplementationOnce(() => false);
+      (_isSupportedCSPVersion as Mock).mockImplementationOnce(() => false);
 
       await expect(isValidSystemSetup()).rejects.toThrowError('Не поддерживаемая версия CSP');
     });

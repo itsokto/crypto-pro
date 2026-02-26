@@ -12,37 +12,35 @@ export interface SystemInfo {
  *
  * @returns информацию о CSP и плагине
  */
-export const getSystemInfo = _afterPluginsLoaded(
-  (): SystemInfo => {
-    const sysInfo = {
-      cadesVersion: null,
-      cspVersion: null,
-    };
+export const getSystemInfo = _afterPluginsLoaded((): SystemInfo => {
+  const sysInfo = {
+    cadesVersion: null,
+    cspVersion: null,
+  };
 
-    return eval(
-      _generateCadesFn(function getSystemInfo(): SystemInfo {
-        let cadesAbout;
+  return eval(
+    _generateCadesFn(function getSystemInfo(): SystemInfo {
+      let cadesAbout;
 
-        try {
-          cadesAbout = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.About');
+      try {
+        cadesAbout = __cadesAsyncToken__ + __createCadesPluginObject__('CAdESCOM.About');
 
-          sysInfo.cadesVersion = __cadesAsyncToken__ + cadesAbout.PluginVersion;
-          sysInfo.cspVersion = __cadesAsyncToken__ + cadesAbout.CSPVersion();
+        sysInfo.cadesVersion = __cadesAsyncToken__ + cadesAbout.PluginVersion;
+        sysInfo.cspVersion = __cadesAsyncToken__ + cadesAbout.CSPVersion();
 
-          if (!sysInfo.cadesVersion) {
-            sysInfo.cadesVersion = __cadesAsyncToken__ + cadesAbout.Version;
-          }
-
-          sysInfo.cadesVersion = __cadesAsyncToken__ + sysInfo.cadesVersion.toString();
-          sysInfo.cspVersion = __cadesAsyncToken__ + sysInfo.cspVersion.toString();
-        } catch (error) {
-          console.error(error);
-
-          throw new Error(_extractMeaningfulErrorMessage(error) || 'Ошибка при получении информации о системе');
+        if (!sysInfo.cadesVersion) {
+          sysInfo.cadesVersion = __cadesAsyncToken__ + cadesAbout.Version;
         }
 
-        return sysInfo;
-      }),
-    );
-  },
-);
+        sysInfo.cadesVersion = __cadesAsyncToken__ + sysInfo.cadesVersion.toString();
+        sysInfo.cspVersion = __cadesAsyncToken__ + sysInfo.cspVersion.toString();
+      } catch (error) {
+        console.error(error);
+
+        throw new Error(_extractMeaningfulErrorMessage(error) || 'Ошибка при получении информации о системе');
+      }
+
+      return sysInfo;
+    }),
+  );
+});

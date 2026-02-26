@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as sinon from 'sinon';
+import { describe, test, expect, vi } from 'vitest';
 import 'cadesplugin';
 import { CadesCertificate } from '../api/certificate';
 import { _getCadesCert } from './_getCadesCert';
@@ -17,16 +16,16 @@ const executionSteps = [Symbol('step 0'), Symbol('step 1'), Symbol('step 2'), Sy
 const executionFlow = {
   [executionSteps[0]]: {
     Certificates: executionSteps[1],
-    Close: sinon.stub(),
-    Open: sinon.stub(),
+    Close: vi.fn(),
+    Open: vi.fn(),
   },
   [executionSteps[1]]: {
     Count: executionSteps[3],
-    Find: sinon.stub().returns(executionSteps[2]),
+    Find: vi.fn().mockReturnValue(executionSteps[2]),
   },
   [executionSteps[2]]: {
     Count: executionSteps[3],
-    Item: sinon.stub().returns(executionSteps[4]),
+    Item: vi.fn().mockReturnValue(executionSteps[4]),
   },
   [executionSteps[3]]: 1,
   [executionSteps[4]]: {

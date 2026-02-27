@@ -21,4 +21,3 @@ export const cadespluginMock = vi.fn(() => ({
   }),
   LOG_LEVEL_DEBUG: 4,
 }));
-

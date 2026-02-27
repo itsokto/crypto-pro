@@ -1,6 +1,5 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
 
-
 import { isValidSystemSetup } from './isValidSystemSetup';
 import { getSystemInfo } from './getSystemInfo';
 import { _isSupportedCadesVersion } from '../helpers/_isSupportedCadesVersion';

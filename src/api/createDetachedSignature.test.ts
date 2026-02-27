@@ -62,7 +62,7 @@ describe('createDetachedSignature', () => {
           return executionSteps[5];
       }
     });
-  })
+  });
 
   test('uses specified certificate', async () => {
     await createDetachedSignature(parsedCertificateMock.thumbprint, 'message');

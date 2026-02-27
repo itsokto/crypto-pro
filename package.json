@@ -25,14 +25,14 @@
     "dev": "tsdown --watch",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
-    "lint": "eslint './src/**/*'",
-    "lint:fix": "eslint --fix './src/**/*'",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
     "prepack": "npm run build",
     "prepublishOnly": "npm run lint && vitest run && npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/itsokto/crypto-pro"
+    "url": "git+https://github.com/itsokto/crypto-pro.git"
   },
   "keywords": [
     "crypto",

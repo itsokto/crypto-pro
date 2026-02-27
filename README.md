@@ -8,11 +8,8 @@
 # crypto-pro-browser
 Единое, асинхронное API для взаимодействия с КриптоПРО ЭЦП Browser Plug-In
 
-| [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_64x64.png)](https://www.google.com/chrome/) | [![Yandex Browser](https://raw.githubusercontent.com/alrra/browser-logos/main/src/yandex/yandex_64x64.png)](https://browser.yandex.ru/) | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_64x64.png)](https://www.mozilla.org/firefox/) | [![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_64x64.png)](https://www.opera.com/) |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| с расширением [CryptoPro Extension for CAdES Browser Plug-in](https://chromewebstore.google.com/detail/extension-for-cades-brows/pfhgbfnnjiafkhfdkmpiflachepdcjod) | с расширением [CryptoPro Extension for CAdES Browser Plug-in](https://chromewebstore.google.com/detail/extension-for-cades-brows/pfhgbfnnjiafkhfdkmpiflachepdcjod) | с [расширением](https://www.cryptopro.ru/products/cades/plugin) | с расширением [CryptoPro Extension for CAdES Browser Plug-in](https://addons.opera.com/en/extensions/details/cryptopro-extension-for-cades-browser-plug-in/) |
-
 - [crypto-pro-browser](#cryptopro)
+    - [Предварительные требования](#prerequisites)
     - [Установка](#install)
     - [API](#api)
         - [Методы объекта cryptoPro](#api-cryptopro)
@@ -25,20 +22,21 @@
 - [Тем, кто хочет помочь](#developers)
     - [Запуск режима разработки](#dev-mode)
     - [Запуск тестов](#tests-execution)
-- [Полезная информация](#helpful)
 - [Лицензия](#license)
+
+<a name="prerequisites"></a>
+## Предварительные требования
+
+Для работы библиотеки необходимо установить:
+
+- [КриптоПРО CSP](https://www.cryptopro.ru/products/csp/downloads) (v4.0+)
+- [КриптоПРО ЭЦП browser plug-in](https://www.cryptopro.ru/products/cades/plugin) (v2.0.12438+)
 
 <a name="install"></a>
 ## Установка
-Для NPM:
-```bash
-npm install crypto-pro-browser
-```
-
-Для Yarn:
-```bash
-yarn add crypto-pro-browser
-```
+| npm | yarn | pnpm |
+| --- | ---- | ---- |
+| `npm install crypto-pro-browser` | `yarn add crypto-pro-browser` | `pnpm add crypto-pro-browser` |
 
 Подключение пакета как UMD модуля через тэг script:
 ```html
@@ -102,15 +100,9 @@ import { getUserCertificates, Certificate } from 'crypto-pro-browser';
 
 <a name="supported-cist"></a>
 ## Поддерживаемые СКЗИ
-[КриптоПРО CSP](https://www.cryptopro.ru/products/csp/downloads) (v4.0+) *рекомендуется использование только сертифицированных версий*. Инструкция по установке:
-- [Linux / OSX](#csp-install-linux-osx)
-- (в Windows следуйте указаниям программы-установщика)
+[КриптоПРО CSP](https://www.cryptopro.ru/products/csp/downloads) (v4.0+) *рекомендуется использование только сертифицированных версий*.
 
 [КриптоПРО ЭЦП browser plug-in](https://www.cryptopro.ru/products/cades/plugin) (v2.0.12438+).
-
-[Инструкция](#plugin-install-linux) по установке плагина в Linux. В Windows и OSX следуйте указаниям программы-установщика.
-
-[Инструкция](#certificates-install-linux) по установке сертификатов в систему для Linux / OSX.
 
 <a name="examples"></a>
 ## Примеры
@@ -186,17 +178,6 @@ npm run dev
 ```bash
 npm test
 ```
-
-<a name="helpful"></a>
-# Полезная информация
-
-## Установка КриптоПРО CSP
-Загрузите дистрибутив и следуйте официальной инструкции по установке:
-[https://www.cryptopro.ru/products/csp/downloads](https://www.cryptopro.ru/products/csp/downloads)
-
-## Установка КриптоПРО ЭЦП browser plug-in
-Загрузите плагин и следуйте официальной инструкции по установке:
-[https://www.cryptopro.ru/products/cades/plugin](https://www.cryptopro.ru/products/cades/plugin)
 
 <a name="license"></a>
 # Лицензия

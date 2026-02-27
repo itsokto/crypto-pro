@@ -1,15 +1,7 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
-import 'cadesplugin';
-import 'console-mock';
 import { _afterPluginsLoaded } from './_afterPluginsLoaded';
 
-const cadesPluginMock = window.cadesplugin;
-
 describe('_afterPluginsLoaded', () => {
-  beforeEach(() => {
-    window.cadesplugin = cadesPluginMock;
-  });
-
   test('sets log level on a vendor library', async () => {
     const wrappedMethod = _afterPluginsLoaded(vi.fn());
 

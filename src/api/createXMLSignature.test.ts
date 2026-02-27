@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
+
+import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { createXMLSignature } from './createXMLSignature';
 import { _getCadesCert } from '../helpers/_getCadesCert';
 
@@ -30,17 +30,19 @@ const executionFlow = {
   [executionSteps[2]]: 'signature',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
-  switch (object) {
-    case 'CAdESCOM.CPSigner':
-      return executionSteps[0];
-    case 'CAdESCOM.SignedXML':
-      return executionSteps[1];
-  }
-});
-
 describe('createXMLSignature', () => {
+  beforeEach(() => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
+      switch (object) {
+        case 'CAdESCOM.CPSigner':
+          return executionSteps[0];
+        case 'CAdESCOM.SignedXML':
+          return executionSteps[1];
+      }
+    });
+  });
+
   test('uses specified certificate', async () => {
     await createXMLSignature(parsedCertificateMock.thumbprint, 'message');
 

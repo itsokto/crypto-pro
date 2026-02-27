@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
+
 import { hasExtendedKeyUsage } from './hasExtendedKeyUsage';
 
 const oidsMock = ['1.3.6.1.4.1.311.80.1', '1.3.6.1.5.5.7.3.2', '1.3.6.1.4.1.311.10.3.12'];

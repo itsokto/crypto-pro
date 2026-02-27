@@ -1,6 +1,5 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import { parsedCertificates } from '../../__mocks__/certificates';
+import { parsedCertificates } from '../../mocks/certificates';
 import { ISSUER_TAGS_TRANSLATIONS, SUBJECT_TAGS_TRANSLATIONS } from '../../constants';
 import { exportBase64 } from './exportBase64';
 import { getAlgorithm } from './getAlgorithm';

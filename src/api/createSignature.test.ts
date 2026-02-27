@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import 'console-mock';
-import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
+
+import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { createSignature } from './createSignature';
 import { _getCadesCert } from '../helpers/_getCadesCert';
 
@@ -37,20 +36,20 @@ const executionFlow = {
   [executionSteps[4]]: 'signature',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
-  switch (object) {
-    case 'CADESCOM.CPAttribute':
-      return executionSteps[0];
-    case 'CAdESCOM.CadesSignedData':
-      return executionSteps[1];
-    case 'CAdESCOM.CPSigner':
-      return executionSteps[2];
-  }
-});
-
 describe('createSignature', () => {
   test('goes through whole execution flow to create signature', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
+      switch (object) {
+        case 'CADESCOM.CPAttribute':
+          return executionSteps[0];
+        case 'CAdESCOM.CadesSignedData':
+          return executionSteps[1];
+        case 'CAdESCOM.CPSigner':
+          return executionSteps[2];
+      }
+    });
+
     const data = btoa('b285056dbf18d7392d7677369524dd14747459ed8143997e163b2986f92fd42c');
     const signature = await createSignature(parsedCertificateMock.thumbprint, data);
 

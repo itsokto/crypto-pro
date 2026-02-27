@@ -9,5 +9,6 @@ export default defineConfig({
   platform: 'browser',
   target: 'es2020',
   sourcemap: true,
-  external: ['cadesplugin_api.js'],
+  minify: true,
+  inlineOnly: ['cadesplugin_api.js-actual'],
 });

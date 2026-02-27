@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import 'cadesplugin';
+
 import { _extractMeaningfulErrorMessage } from './_extractMeaningfulErrorMessage';
 
 describe('_extractMeaningfulErrorMessage', () => {

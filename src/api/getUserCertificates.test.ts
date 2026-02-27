@@ -1,6 +1,6 @@
-import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
-import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { getUserCertificates } from './getUserCertificates';
 
 const [rawCertificateMock] = rawCertificates;
@@ -51,10 +51,12 @@ const executionFlow = {
   [executionSteps[10]]: rawCertificateMock.ValidToDate,
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
-
 describe('getUserCertificates', () => {
+  beforeEach(() => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
+  });
+
   test('returns certificates list', async () => {
     const certificates = await getUserCertificates();
 

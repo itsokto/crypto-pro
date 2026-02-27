@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
+
 import { getSystemInfo } from './getSystemInfo';
 
 const executionSteps = [
@@ -29,11 +29,11 @@ const executionFlow: any = {
   [executionSteps[5]]: '4.0.9971',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
-
 describe('getSystemInfo', () => {
   test('returns information about environment', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
+
     const systemInfo = await getSystemInfo();
 
     expect(systemInfo).toStrictEqual({

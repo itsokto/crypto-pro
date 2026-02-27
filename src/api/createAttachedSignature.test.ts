@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
+
+import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { createAttachedSignature } from './createAttachedSignature';
 import { _getCadesCert } from '../helpers/_getCadesCert';
 
@@ -36,19 +36,21 @@ const executionFlow = {
   [executionSteps[4]]: 'signature',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
-  switch (object) {
-    case 'CADESCOM.CPAttribute':
-      return executionSteps[0];
-    case 'CAdESCOM.CadesSignedData':
-      return executionSteps[1];
-    case 'CAdESCOM.CPSigner':
-      return executionSteps[2];
-  }
-});
-
 describe('createAttachedSignature', () => {
+  beforeEach(() => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
+      switch (object) {
+        case 'CADESCOM.CPAttribute':
+          return executionSteps[0];
+        case 'CAdESCOM.CadesSignedData':
+          return executionSteps[1];
+        case 'CAdESCOM.CPSigner':
+          return executionSteps[2];
+      }
+    });
+  });
+
   test('uses Buffer to encrypt the message', async () => {
     const originalBufferFrom = Buffer.from;
 

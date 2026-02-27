@@ -1,5 +1,4 @@
 import { describe, test, expect } from 'vitest';
-import 'cadesplugin';
 import { getCadesProp } from './getCadesProp';
 
 const cadesPropertyContentMock = 'content of a cades property';
@@ -10,10 +9,10 @@ const executionFlow = {
   [executionSteps[0]]: cadesPropertyContentMock,
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-
 describe('getCadesProp', () => {
   test('returns contents of a cades prop', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+
     const cadesPropertyContent = await getCadesProp.call(
       {
         _cadesCertificate: {

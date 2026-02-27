@@ -1,5 +1,4 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
 import { getAlgorithm } from './getAlgorithm';
 
 const executionSteps = [Symbol('step 0'), Symbol('step 1'), Symbol('step 2'), Symbol('step 3')];
@@ -16,10 +15,10 @@ const executionFlow = {
   [executionSteps[3]]: 'oid',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-
 describe('getAlgorithm', () => {
   test('returns information about algorithm', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+
     const algorithmInfo = await getAlgorithm.call({
       _cadesCertificate: {
         PublicKey: vi.fn(() => executionSteps[0]),

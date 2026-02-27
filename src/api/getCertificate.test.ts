@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import { parsedCertificates } from '../__mocks__/certificates';
+
+import { parsedCertificates } from '../mocks/certificates';
 import { getCertificate } from './getCertificate';
 import { getUserCertificates } from './getUserCertificates';
 

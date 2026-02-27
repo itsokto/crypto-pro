@@ -21,8 +21,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "clean": "rimraf dist coverage",
-    "build": "npm run clean && tsdown",
+    "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
@@ -50,15 +49,14 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^22.13.5",
+    "@types/node": "^20.19.35",
     "@vitest/coverage-v8": "^4.0.18",
-    "cadesplugin_api.js": "^2.3.5",
+    "cadesplugin_api.js-actual": "2.4.1",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "jsdom": "^28.1.0",
     "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
     "tsdown": "^0.20.3",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.1",

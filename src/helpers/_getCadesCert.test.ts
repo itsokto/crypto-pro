@@ -1,5 +1,4 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
 import { CadesCertificate } from '../api/certificate';
 import { _getCadesCert } from './_getCadesCert';
 
@@ -37,11 +36,11 @@ const executionFlow = {
   },
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
-
 describe('_getCadesCert', () => {
   test('returns certificate by a thumbprint', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation(() => executionSteps[0]);
+
     const certificate: CadesCertificate = await _getCadesCert(certificateMock.Thumbprint);
 
     expect(certificate).toStrictEqual(certificateMock);

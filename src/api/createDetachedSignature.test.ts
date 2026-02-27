@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
-import { rawCertificates, parsedCertificates } from '../__mocks__/certificates';
+
+import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { createDetachedSignature } from './createDetachedSignature';
 import { _getCadesCert } from '../helpers/_getCadesCert';
 
@@ -47,21 +47,23 @@ const executionFlow = {
   },
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
-  switch (object) {
-    case 'CADESCOM.CPAttribute':
-      return executionSteps[0];
-    case 'CAdESCOM.CadesSignedData':
-      return executionSteps[1];
-    case 'CAdESCOM.CPSigner':
-      return executionSteps[2];
-    case 'CAdESCOM.HashedData':
-      return executionSteps[5];
-  }
-});
-
 describe('createDetachedSignature', () => {
+  beforeEach(() => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
+      switch (object) {
+        case 'CADESCOM.CPAttribute':
+          return executionSteps[0];
+        case 'CAdESCOM.CadesSignedData':
+          return executionSteps[1];
+        case 'CAdESCOM.CPSigner':
+          return executionSteps[2];
+        case 'CAdESCOM.HashedData':
+          return executionSteps[5];
+      }
+    });
+  })
+
   test('uses specified certificate', async () => {
     await createDetachedSignature(parsedCertificateMock.thumbprint, 'message');
 

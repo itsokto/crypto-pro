@@ -1,5 +1,5 @@
-import { describe, test, expect, vi, Mock } from 'vitest';
-import 'cadesplugin';
+import { describe, test, expect, vi, Mock, beforeEach } from 'vitest';
+
 import { createHash } from './createHash';
 
 const executionSteps = [Symbol('step 0'), Symbol('step 1')];
@@ -14,15 +14,17 @@ const executionFlow = {
   [executionSteps[1]]: 'hash',
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
-  switch (object) {
-    case 'CAdESCOM.HashedData':
-      return executionSteps[0];
-  }
-});
-
 describe('createHash', () => {
+  beforeEach(() => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+    window.cadesplugin.CreateObjectAsync.mockImplementation((object) => {
+      switch (object) {
+        case 'CAdESCOM.HashedData':
+          return executionSteps[0];
+      }
+    });
+  });
+
   test('uses Buffer to encrypt the message', async () => {
     const originalBufferFrom = Buffer.from;
 

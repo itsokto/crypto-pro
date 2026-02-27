@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
+
 import { execute } from './execute';
 import { _extractMeaningfulErrorMessage } from '../helpers/_extractMeaningfulErrorMessage';
 

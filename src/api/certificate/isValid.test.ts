@@ -1,5 +1,5 @@
-import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { isValid } from './isValid';
 
 const executionSteps = [Symbol('step 0'), Symbol('step 1')];
@@ -11,10 +11,10 @@ const executionFlow = {
   [executionSteps[1]]: true,
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-
 describe('isValid', () => {
   test('returns validity state of certificate', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+
     const valid = await isValid.call({
       _cadesCertificate: {
         IsValid: vi.fn(() => executionSteps[0]),

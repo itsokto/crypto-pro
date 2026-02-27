@@ -1,5 +1,4 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
 import { getDecodedExtendedKeyUsage } from './getDecodedExtendedKeyUsage';
 
 const oidsMock = ['1.2.643.3.131.1.1', '1.2.643.6.3.1.3.1', '1.2.643.3.141.1.1'];

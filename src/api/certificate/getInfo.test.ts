@@ -1,5 +1,4 @@
 import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
-import 'cadesplugin';
 import { ISSUER_TAGS_TRANSLATIONS } from '../../constants';
 import { getInfo } from './getInfo';
 import { getCadesProp } from './getCadesProp';

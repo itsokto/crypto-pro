@@ -1,5 +1,4 @@
 import { describe, test, expect, vi } from 'vitest';
-import 'cadesplugin';
 import { getExtendedKeyUsage } from './getExtendedKeyUsage';
 
 const oidsMock = ['1.3.6.1.4.1.311.80.1'];
@@ -21,10 +20,10 @@ const executionFlow = {
   [executionSteps[4]]: oidsMock[0],
 };
 
-window.cadesplugin.__defineExecutionFlow(executionFlow);
-
 describe('getExtendedKeyUsage', () => {
   test('returns info about oids', async () => {
+    window.cadesplugin.__defineExecutionFlow(executionFlow);
+
     const oids = await getExtendedKeyUsage.call({
       _cadesCertificate: {
         ExtendedKeyUsage: vi.fn(() => executionSteps[0]),

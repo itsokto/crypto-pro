@@ -1,19 +1,19 @@
 {
-  "name": "crypto-pro",
-  "version": "2.5.2",
+  "name": "crypto-pro-browser",
+  "version": "1.0.0",
   "description": "API для взаимодействия с КриптоПро",
-  "main": "./dist/crypto-pro.js",
-  "module": "./dist/crypto-pro.mjs",
-  "types": "./dist/crypto-pro.d.ts",
+  "main": "./dist/crypto-pro-browser.js",
+  "module": "./dist/crypto-pro-browser.mjs",
+  "types": "./dist/crypto-pro-browser.d.ts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/crypto-pro.d.mts",
-        "default": "./dist/crypto-pro.mjs"
+        "types": "./dist/crypto-pro-browser.d.mts",
+        "default": "./dist/crypto-pro-browser.mjs"
       },
       "require": {
-        "types": "./dist/crypto-pro.d.ts",
-        "default": "./dist/crypto-pro.js"
+        "types": "./dist/crypto-pro-browser.d.ts",
+        "default": "./dist/crypto-pro-browser.js"
       }
     }
   },
@@ -32,12 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vgoma/crypto-pro"
-  },
-  "author": {
-    "name": "Vitalii Goma",
-    "email": "vgoma@yandex.ru",
-    "url": "https://github.com/vgoma"
+    "url": "https://github.com/itsokto/crypto-pro"
   },
   "keywords": [
     "crypto",

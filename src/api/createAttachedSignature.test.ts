@@ -76,4 +76,30 @@ describe('createAttachedSignature', () => {
 
     expect(signature).toEqual('signature');
   });
+
+  test('converts ArrayBuffer message to base64', async () => {
+    const arrayBuffer = new ArrayBuffer(7);
+
+    const signature = await createAttachedSignature(parsedCertificateMock.thumbprint, arrayBuffer);
+
+    expect(signature).toEqual('signature');
+  });
+
+  test('uses Buffer.from with Uint8Array for ArrayBuffer input', async () => {
+    const originalBufferFrom = Buffer.from;
+    const toStringMock = vi.fn();
+
+    (Buffer.from as Mock) = vi.fn(() => ({
+      toString: toStringMock,
+    }));
+
+    const arrayBuffer = new ArrayBuffer(7);
+
+    await createAttachedSignature(parsedCertificateMock.thumbprint, arrayBuffer);
+
+    expect(Buffer.from).toHaveBeenCalledTimes(1);
+    expect(Buffer.from).toHaveBeenCalledWith(expect.any(Uint8Array));
+
+    Buffer.from = originalBufferFrom;
+  });
 });

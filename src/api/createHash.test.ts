@@ -50,4 +50,30 @@ describe('createHash', () => {
 
     expect(hash).toEqual('hash');
   });
+
+  test('converts ArrayBuffer message to base64', async () => {
+    const arrayBuffer = new ArrayBuffer(7);
+
+    const hash = await createHash(arrayBuffer);
+
+    expect(hash).toEqual('hash');
+  });
+
+  test('uses Buffer.from with Uint8Array for ArrayBuffer input', async () => {
+    const originalBufferFrom = Buffer.from;
+    const toStringMock = vi.fn();
+
+    (Buffer.from as Mock) = vi.fn(() => ({
+      toString: toStringMock,
+    }));
+
+    const arrayBuffer = new ArrayBuffer(7);
+
+    await createHash(arrayBuffer);
+
+    expect(Buffer.from).toHaveBeenCalledTimes(1);
+    expect(Buffer.from).toHaveBeenCalledWith(expect.any(Uint8Array));
+
+    Buffer.from = originalBufferFrom;
+  });
 });

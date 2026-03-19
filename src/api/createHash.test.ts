@@ -1,4 +1,4 @@
-import { describe, test, expect, vi, Mock, beforeEach } from 'vitest';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 
 import { createHash } from './createHash';
 
@@ -25,33 +25,13 @@ describe('createHash', () => {
     });
   });
 
-  test('uses Buffer to encrypt the message', async () => {
-    const originalBufferFrom = Buffer.from;
-
-    (Buffer.from as Mock) = vi.fn(() => ({
-      toString: vi.fn(),
-    }));
-
-    await createHash('message');
-
-    expect(Buffer.from).toHaveBeenCalledTimes(1);
-
-    Buffer.from = originalBufferFrom;
-  });
-
-  test('returns created hash', async () => {
+  test('returns created hash for string message', async () => {
     const hash = await createHash('message');
 
     expect(hash).toEqual('hash');
   });
 
-  test('returns created hash with specified encoding', async () => {
-    const hash = await createHash('message', { encoding: 'binary' });
-
-    expect(hash).toEqual('hash');
-  });
-
-  test('converts ArrayBuffer message to base64', async () => {
+  test('returns created hash for ArrayBuffer message', async () => {
     const arrayBuffer = new ArrayBuffer(7);
 
     const hash = await createHash(arrayBuffer);
@@ -59,21 +39,25 @@ describe('createHash', () => {
     expect(hash).toEqual('hash');
   });
 
-  test('uses Buffer.from with Uint8Array for ArrayBuffer input', async () => {
-    const originalBufferFrom = Buffer.from;
-    const toStringMock = vi.fn();
+  test('encodes string message to base64 using btoa', async () => {
+    const btoaSpy = vi.spyOn(window, 'btoa');
 
-    (Buffer.from as Mock) = vi.fn(() => ({
-      toString: toStringMock,
-    }));
+    await createHash('message');
+
+    expect(btoaSpy).toHaveBeenCalledTimes(1);
+
+    btoaSpy.mockRestore();
+  });
+
+  test('encodes ArrayBuffer message to base64 using btoa', async () => {
+    const btoaSpy = vi.spyOn(window, 'btoa');
 
     const arrayBuffer = new ArrayBuffer(7);
 
     await createHash(arrayBuffer);
 
-    expect(Buffer.from).toHaveBeenCalledTimes(1);
-    expect(Buffer.from).toHaveBeenCalledWith(expect.any(Uint8Array));
+    expect(btoaSpy).toHaveBeenCalledTimes(1);
 
-    Buffer.from = originalBufferFrom;
+    btoaSpy.mockRestore();
   });
 });

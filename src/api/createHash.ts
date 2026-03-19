@@ -1,4 +1,3 @@
-import { TranscodeEncoding } from 'buffer';
 import { _afterPluginsLoaded } from '../helpers/_afterPluginsLoaded';
 import { _extractMeaningfulErrorMessage } from '../helpers/_extractMeaningfulErrorMessage';
 
@@ -10,12 +9,6 @@ type Options = {
    * @defaultValue `cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256`
    */
   hashedAlgorithm?: number;
-  /**
-   * Кодировка сообщения для хеширования
-   *
-   * @defaultValue `utf8`
-   */
-  encoding?: TranscodeEncoding;
 };
 
 /**
@@ -36,11 +29,15 @@ export const createHash = _afterPluginsLoaded(
       let messageBase64;
 
       try {
+        let bytes: Uint8Array;
+
         if (unencryptedMessage instanceof ArrayBuffer) {
-          messageBase64 = Buffer.from(new Uint8Array(unencryptedMessage)).toString('base64');
+          bytes = new Uint8Array(unencryptedMessage);
         } else {
-          messageBase64 = Buffer.from(unencryptedMessage, options?.encoding).toString('base64');
+          bytes = new TextEncoder().encode(unencryptedMessage);
         }
+
+        messageBase64 = btoa(Array.from(bytes, (byte) => String.fromCodePoint(byte)).join(''));
       } catch (error) {
         console.error(error);
 

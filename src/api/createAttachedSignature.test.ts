@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, vi, Mock } from 'vitest';
+import { describe, test, expect, beforeEach, vi, type Mock } from 'vitest';
 
 import { rawCertificates, parsedCertificates } from '../mocks/certificates';
 import { createAttachedSignature } from './createAttachedSignature';
@@ -51,33 +51,19 @@ describe('createAttachedSignature', () => {
     });
   });
 
-  test('uses Buffer to encrypt the message', async () => {
-    const originalBufferFrom = Buffer.from;
-
-    (Buffer.from as Mock) = vi.fn(() => ({
-      toString: vi.fn(),
-    }));
-
-    await createAttachedSignature(parsedCertificateMock.thumbprint, 'message');
-
-    expect(Buffer.from).toHaveBeenCalledTimes(1);
-
-    Buffer.from = originalBufferFrom;
-  });
-
   test('uses specified certificate', async () => {
     await createAttachedSignature(parsedCertificateMock.thumbprint, 'message');
 
     expect(_getCadesCert).toHaveBeenCalledWith(parsedCertificateMock.thumbprint);
   });
 
-  test('returns signature', async () => {
+  test('returns signature for string message', async () => {
     const signature = await createAttachedSignature(parsedCertificateMock.thumbprint, 'message');
 
     expect(signature).toEqual('signature');
   });
 
-  test('converts ArrayBuffer message to base64', async () => {
+  test('returns signature for ArrayBuffer message', async () => {
     const arrayBuffer = new ArrayBuffer(7);
 
     const signature = await createAttachedSignature(parsedCertificateMock.thumbprint, arrayBuffer);
@@ -85,21 +71,25 @@ describe('createAttachedSignature', () => {
     expect(signature).toEqual('signature');
   });
 
-  test('uses Buffer.from with Uint8Array for ArrayBuffer input', async () => {
-    const originalBufferFrom = Buffer.from;
-    const toStringMock = vi.fn();
+  test('encodes string message to base64 using btoa', async () => {
+    const btoaSpy = vi.spyOn(window, 'btoa');
 
-    (Buffer.from as Mock) = vi.fn(() => ({
-      toString: toStringMock,
-    }));
+    await createAttachedSignature(parsedCertificateMock.thumbprint, 'message');
+
+    expect(btoaSpy).toHaveBeenCalledTimes(1);
+
+    btoaSpy.mockRestore();
+  });
+
+  test('encodes ArrayBuffer message to base64 using btoa', async () => {
+    const btoaSpy = vi.spyOn(window, 'btoa');
 
     const arrayBuffer = new ArrayBuffer(7);
 
     await createAttachedSignature(parsedCertificateMock.thumbprint, arrayBuffer);
 
-    expect(Buffer.from).toHaveBeenCalledTimes(1);
-    expect(Buffer.from).toHaveBeenCalledWith(expect.any(Uint8Array));
+    expect(btoaSpy).toHaveBeenCalledTimes(1);
 
-    Buffer.from = originalBufferFrom;
+    btoaSpy.mockRestore();
   });
 });

@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { createAttachedSignature, createDetachedSignature, createHash } from 'crypto-pro';
+import { type FormEvent, useState } from 'react';
+import {
+  type Certificate,
+  createAttachedSignature,
+  createDetachedSignature,
+  createHash,
+} from 'crypto-pro-browser';
 import Message from './components/Message';
-import Certificate from './components/Certificate';
+import CertificateSelect from './components/Certificate';
 import SignatureType from './components/SignatureType';
 import Hash from './components/Hash';
 import Signature from './components/Signature';
@@ -10,17 +15,17 @@ import SystemInfo from './components/SystemInfo';
 
 function App() {
   const [message, setMessage] = useState('');
-  const [certificate, setCertificate] = useState(null);
-  const [detachedSignature, setSignatureType] = useState(null);
+  const [certificate, setCertificate] = useState<Certificate | null>(null);
+  const [detachedSignature, setSignatureType] = useState<boolean | null>(null);
   const [hash, setHash] = useState('');
   const [hashStatus, setHashStatus] = useState('Не вычислен');
-  const [hashError, setHashError] = useState(null);
+  const [hashError, setHashError] = useState<string | null>(null);
   const [signature, setSignature] = useState('');
   const [signatureStatus, setSignatureStatus] = useState('Не создана');
-  const [signatureError, setSignatureError] = useState(null);
+  const [signatureError, setSignatureError] = useState<string | null>(null);
 
-  async function createSignature(event) {
-    let hash;
+  async function createSignature(event: FormEvent) {
+    let hash: string;
 
     event.preventDefault();
 
@@ -36,7 +41,7 @@ function App() {
 
       setHash(hash);
     } catch (error) {
-      setHashError(error.message);
+      setHashError((error as Error).message);
 
       return;
     }
@@ -46,9 +51,9 @@ function App() {
 
     if (detachedSignature) {
       try {
-        setSignature(await createDetachedSignature(certificate.thumbprint, hash));
+        setSignature(await createDetachedSignature(certificate!.thumbprint, hash));
       } catch (error) {
-        setSignatureError(error.message);
+        setSignatureError((error as Error).message);
       }
 
       setSignatureStatus('Не создана');
@@ -57,9 +62,9 @@ function App() {
     }
 
     try {
-      setSignature(await createAttachedSignature(certificate.thumbprint, message));
+      setSignature(await createAttachedSignature(certificate!.thumbprint, message));
     } catch (error) {
-      setSignatureError(error.message);
+      setSignatureError((error as Error).message);
     }
 
     setSignatureStatus('Не создана');
@@ -73,7 +78,7 @@ function App() {
 
           <br/><br/>
 
-          <Certificate onChange={setCertificate}/>
+          <CertificateSelect onChange={setCertificate}/>
 
           <SignatureType onChange={setSignatureType}/>
 

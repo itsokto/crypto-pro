@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function Message({onChange}) {
+interface Props {
+  onChange: (message: string) => void;
+}
+
+function Message({ onChange }: Props) {
   const [message, setMessage] = useState('Привет мир!');
 
-  function onMessageChange(event) {
+  function onMessageChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setMessage(event.target.value);
     onChange(event.target.value);
   }
 
-  useEffect(() => onChange(message));
+  useEffect(() => onChange(message), []);
 
   return (
     <>
@@ -21,8 +25,8 @@ function Message({onChange}) {
       <textarea
         id="message"
         name="message"
-        cols="80"
-        rows="5"
+        cols={80}
+        rows={5}
         placeholder="Введите сообщение"
         value={message}
         onChange={onMessageChange}

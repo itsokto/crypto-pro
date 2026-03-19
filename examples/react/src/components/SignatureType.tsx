@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function SignatureType({onChange}) {
+interface Props {
+  onChange: (detached: boolean) => void;
+}
+
+function SignatureType({ onChange }: Props) {
   const [type, setType] = useState(true);
 
   function onTypeToggle() {
@@ -8,7 +12,7 @@ function SignatureType({onChange}) {
     onChange(!type);
   }
 
-  useEffect(() => onChange(type));
+  useEffect(() => onChange(type), []);
 
   return (
     <>
@@ -30,7 +34,7 @@ function SignatureType({onChange}) {
           checked={type}
           onChange={onTypeToggle}/>Отделенная</label>
     </>
-  )
+  );
 }
 
 export default SignatureType;

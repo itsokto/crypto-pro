@@ -1,6 +1,10 @@
-import React from 'react';
+interface Props {
+  hash: string;
+  hashStatus: string;
+  hashError: string | null;
+}
 
-function Hash({hash, hashStatus, hashError}) {
+function Hash({ hash, hashStatus, hashError }: Props) {
   return (
     <>
       <legend>Результат</legend>
@@ -11,15 +15,15 @@ function Hash({hash, hashStatus, hashError}) {
 
       <textarea
         id="hash"
-        cols="80"
-        rows="5"
+        cols={80}
+        rows={5}
         value={hash}
         placeholder={hashStatus}
         readOnly/>
 
-      <pre>{hashError || null}</pre>
+      <pre>{hashError}</pre>
     </>
-  )
+  );
 }
 
 export default Hash;
